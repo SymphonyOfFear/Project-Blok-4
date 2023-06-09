@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html>
 
@@ -10,26 +13,21 @@
 
 <body>
     <div class="navbar">
-        <?php if (isset($_SESSION['isIngelogd']) && $_SESSION['isIngelogd'] === true) {
-            echo '<a>Overzicht 1</a>',
-            '<a>Overzicht 2</a>';
-        }
-        ?>
+        <a class="navbar-brand" href="#">Overzichten</a>
         <div class="dropdown">
-            <button class="account-btn" onclick="toggleDropdown()">Account</button>
+        <button class="account-btn" onclick="toggleDropdown(event)">Account</button>
             <div id="dropdown-content" class="dropdown-content">
-                <?php if (isset($_SESSION['isIngelogd']) && $_SESSION['isIngelogd'] === true) {
-                    echo '<a href="#">Instellingen</a>';
-                    echo '<a>Uitloggen</a>';
-                } else {
-                    echo '<a href="inloggen.php">Inloggen</a>';
-                    echo '<a href="registreer-gebruiker.php">Registreren</a>';
-                }
-                ?>
+                
             </div>
         </div>
     </div>
-
+    <?php if (isset($_SESSION['isIngelogd']) && $_SESSION['isIngelogd'] === true) : ?>
+                    <a href="instellingen.php">Instellingen</a>
+                    <a href="uitloggen.php">Uitloggen</a>
+                <?php else : ?>
+                    <a href="inloggen.php">Inloggen</a>
+                    <a href="registreer-gebruiker.php">Registreren</a>
+                <?php endif; ?>
     <div class="container">
         <h1>Registreren</h1>
         <div class="progress">

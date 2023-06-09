@@ -1,3 +1,4 @@
+// ProgressBar
 function showFormPart(partNumber) {
   var formParts = document.querySelectorAll('section');
   var progressBar = document.getElementById('progress-bar');
@@ -26,25 +27,26 @@ function updateProgress() {
 }
 
 function validateForm() {
-  
+  // Add your form validation logic here
   return true;
 }
-
-
-// Dropdown
 function toggleDropdown() {
+  console.log('Toggle dropdown called');
+  
   var dropdownContent = document.getElementById("dropdown-content");
-  dropdownContent.classList.toggle("show");
+  
+  if (dropdownContent.style.display === "block") {
+    dropdownContent.style.display = "none";
+    console.log('Dropdown content hidden');
+  } else {
+    dropdownContent.style.display = "block";
+    console.log('Dropdown content shown');
+  }
 }
 
-window.onclick = function(event) {
-  if (!event.target.matches('.account-btn')) {
-      var dropdowns = document.getElementsByClassName("dropdown-content");
-      for (var i = 0; i < dropdowns.length; i++) {
-          var openDropdown = dropdowns[i];
-          if (openDropdown.classList.contains('show')) {
-              openDropdown.classList.remove('show');
-          }
-      }
-  }
-};
+console.log('Script loaded');
+
+
+
+
+

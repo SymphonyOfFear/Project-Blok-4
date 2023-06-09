@@ -1,19 +1,83 @@
+/* Reset styles */
 * {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
+/* Body styles */
 body {
   background-color: #f2f2f2;
   font-family: 'Poppins', sans-serif;
 }
 
+/* Navbar styles */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background-color: #333;
+  display: flex;
+  justify-content: space-between;
+  align-items: center; /* Add this line */
+}
+
+
+.navbar .navbar-brand {
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 2em;
+}
+
+.navbar .dropdown {
+  position: relative;
+}
+
+.navbar .account-btn {
+  background-color: transparent;
+  color: white;
+  border: none;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 2em;
+  cursor: pointer;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  top: 100%;
+  margin-top: px;
+  left: 0;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {
+  background-color: #f1f1f1;
+}
+
+/* Container styles */
 .container {
   background-color: #fff;
   border-radius: 5px;
   padding: 20px;
   margin: 20px auto;
   max-width: 500px;
+  position: relative;
+  overflow-y: auto;
+  height: 400px;
 }
 
 .container h1 {
@@ -31,109 +95,47 @@ body {
   color: #555;
 }
 
-.container input[type="tel"],
 .container input[type="text"],
-.container input[type="email"],
 .container input[type="password"],
-.container select {
+.container input[type="submit"] {
   width: 100%;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
   box-sizing: border-box;
   margin-bottom: 10px;
+  font-family: inherit;
 }
 
-.container input[type="button"],
 .container input[type="submit"] {
-  background-color: #3498db;
-  color: #fff;
+  margin-top: 10px;
+  background-color: blue;
+  color: white;
   border: none;
   padding: 10px 20px;
+  font-size: 16px;
   border-radius: 4px;
   cursor: pointer;
 }
 
-.container input[type="button"]:hover,
 .container input[type="submit"]:hover {
-  background-color: #2980b9;
+  background-color: darkblue;
 }
 
-.progress {
-  height: 10px;
-  background-color: #eee;
-  margin-top: 20px;
-  margin-bottom: 20px;
-  border-radius: 4px;
-}
-
-.progress-bar {
-  height: 100%;
-  background-color: #3498db;
-  width: 0%;
-  border-radius: 4px;
-  transition: width 0.3s ease-in-out;
-}
-
-section {
-  display: none;
-}
-
-section:first-of-type {
-  display: block;
-}
-
-.navbar {
-  background-color: #333;
-  overflow: hidden;
-}
-
-.navbar a {
-  float: left;
-  color: white;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-}
-
-.dropdown {
-  float: right;
-  overflow: hidden;
-  margin-right: 20px;
-}
-
-.dropdown .account-btn {
-  font-size: 16px;
-  border: none;
+.container input[type="submit"]:focus {
   outline: none;
-  color: white;
-  padding: 14px 16px;
-  background-color: inherit;
-  font-family: inherit;
-  margin: 0;
 }
 
-.dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: #f9f9f9;
-  min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-  z-index: 1;
+.container p {
+  text-align: center;
+  margin-top: 10px;
 }
 
-.dropdown-content a {
-  color: black;
-  padding: 12px 16px;
+.container p a {
+  color: blue;
   text-decoration: none;
-  display: block;
-  text-align: left;
 }
 
-.dropdown-content a:hover {
-  background-color: #f1f1f1;
-}
-
-.show {
-  display: block;
+.container p a:hover {
+  text-decoration: underline;
 }
