@@ -12,22 +12,27 @@ session_start();
 </head>
 
 <body>
-    <div class="navbar">
-        <a class="navbar-brand" href="#">Overzichten</a>
+<div class="navbar">
+        <a class="navbar-brand">Mikey's Site</a>
+        <ul class="navbar-content">
+            <li>
+                <a href="overzicht.php">Overzichten</a>
+            </li>
+        </ul>
         <div class="dropdown">
-        <button class="account-btn" onclick="toggleDropdown(event)">Account</button>
-            <div id="dropdown-content" class="dropdown-content">
-                
-            </div>
+            <button class="dropdown-toggle" id="account-dropdown-button" onclick="toggleAccountDropdown()">Account</button>
+            <ul id="account-dropdown-menu" class="dropdown-menu">
+                <?php if (isset($_SESSION['isIngelogd']) && $_SESSION['isIngelogd'] === true) : ?>
+                    <li class="dropdown-item"><a href="instellingen.php">Instellingen</a></li>
+                    <li class="dropdown-item"><a href="uitloggen.php">Uitloggen</a></li>
+                <?php else : ?>
+                    <li class="dropdown-item"><a href="inloggen.php">Inloggen</a></li>
+                    <li class="dropdown-item"><a href="registreer-gebruiker.php">Registreren</a></li>
+                <?php endif; ?>
+            </ul>
         </div>
     </div>
-    <?php if (isset($_SESSION['isIngelogd']) && $_SESSION['isIngelogd'] === true) : ?>
-                    <a href="instellingen.php">Instellingen</a>
-                    <a href="uitloggen.php">Uitloggen</a>
-                <?php else : ?>
-                    <a href="inloggen.php">Inloggen</a>
-                    <a href="registreer-gebruiker.php">Registreren</a>
-                <?php endif; ?>
+    
     <div class="container">
         <h1>Registreren</h1>
         <div class="progress">
@@ -54,7 +59,7 @@ session_start();
                     <option value="Anders">Anders</option>
                 </select>
 
-                <input type="button" value="Volgende" onclick="showFormPart(2)">
+                <input type="button" class="btn-wijzig" value="Volgende" onclick="showFormPart(2)">
             </section>
 
             <!-- Formulier: Deel 2 -->
@@ -69,8 +74,8 @@ session_start();
                 <label for="mobielnummer">Mobielnummer:</label>
                 <input type="tel" id="mobielnummer" name="mobielnummer" oninput="updateProgress()">
 
-                <input type="button" value="Vorige" onclick="showFormPart(1)">
-                <input type="button" value="Volgende" onclick="showFormPart(3)">
+                <input type="button" class="btn-wijzig"  value="Vorige" onclick="showFormPart(1)">
+                <input type="button" class="btn-wijzig" value="Volgende" onclick="showFormPart(3)">
             </section>
 
             <!-- Formulier: Deel 3 -->
@@ -82,7 +87,7 @@ session_start();
                 <label for="wachtwoord">Wachtwoord:</label>
                 <input type="password" id="wachtwoord" name="wachtwoord" required oninput="updateProgress()">
 
-                <input type="button" value="Vorige" onclick="showFormPart(2)">
+                <input type="button" class="btn-wijzig" value="Vorige" onclick="showFormPart(2)">
                 <input type="submit" value="Registreren">
             </section>
         </form>

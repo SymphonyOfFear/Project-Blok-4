@@ -24,9 +24,24 @@ if ($result && mysqli_num_rows($result) > 0) {
 
     if (password_verify($wachtwoord, $user['wachtwoord'])) {
         $_SESSION['isIngelogd'] = true;
-        $_SESSION['login_message'] = "Je bent succesvol ingelogd!";
-        header("Location: overzicht.php");
-        exit;
+        $_SESSION['gebruikerID'] = $user['gebruikerID']; // Store the gebruikerID in session
+
+        // Check if the user is an administrator or manager
+        $adminQuery = "SELECT * FROM Administrator WHERE gebruikerID = " . $user['gebruikerID'];
+        $adminResult = mysqli_query($conn, $adminQuery);
+        $isAdmin = (mysqli_num_rows($adminResult) > 0);
+
+        $managerQuery = "SELECT * FROM Manager WHERE gebruikerID = " . $user['gebruikerID'];
+        $managerResult = mysqli_query($conn, $managerQuery);
+        $isManager = (mysqli_num_rows($managerResult) > 0);
+
+        if ($isAdmin || $isManager) {
+            $_SESSION['isAdmin'] = $isAdmin;
+            $_SESSION['isManager'] = $isManager;
+            $_SESSION['login_message'] = "Je bent succesvol ingelogd!";
+            header("Location: overzicht.php");
+            exit;
+        }
     }
 }
 

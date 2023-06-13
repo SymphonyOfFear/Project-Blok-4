@@ -30,23 +30,60 @@ function validateForm() {
   // Add your form validation logic here
   return true;
 }
-function toggleDropdown() {
-  console.log('Toggle dropdown called');
-  
-  var dropdownContent = document.getElementById("dropdown-content");
-  
-  if (dropdownContent.style.display === "block") {
-    dropdownContent.style.display = "none";
-    console.log('Dropdown content hidden');
+
+function toggleAccountDropdown() {
+  var dropdownMenu = document.getElementById("option-dropdown-menu");
+  if (dropdownMenu.style.display === "block") {
+    dropdownMenu.style.display = "none";
   } else {
-    dropdownContent.style.display = "block";
-    console.log('Dropdown content shown');
+    dropdownMenu.style.display = "block";
+  }
+}
+
+function toggleOptionDropdown() {
+  var dropdownMenu = document.getElementById("account-dropdown-menu");
+  if (dropdownMenu.style.display === "block") {
+    dropdownMenu.style.display = "none";
+  } else {
+    dropdownMenu.style.display = "block";
   }
 }
 
 console.log('Script loaded');
 
+// Overzicht pagina
+function ShowAndHide(section) {
+  var sections = document.getElementsByClassName("section");
+  for (var i = 0; i < sections.length; i++) {
+    sections[i].style.display = "none";
+  }
+  document.getElementsByClassName("section" + section)[0].style.display = "block";
+}
 
+document.addEventListener('DOMContentLoaded', function() {
+  const accountDropdown  = document.getElementById('account-dropdown-button');
+  const optionDropdown = document.getElementById('option-dropdown');
 
+  // Option Dropdown
+  const optionDropdownButton = document.getElementById('account-dropdown-button');
+  optionDropdownButton.addEventListener('click', function() {
+    toggleOptionDropdown();
+    toggleAccountDropdown(); // Close account dropdown if open
+  });
 
+  // Account Dropdown
+  const accountDropdownButton = document.getElementById('option-dropdown-button');
+  accountDropdownButton.addEventListener('click', function() {
+    toggleOptionDropdown();
+    toggleAccountDropdown(); // Close option dropdown if open
+  });
 
+  const dropdownItems = document.querySelectorAll('.dropdown-item');
+  for (var i = 0; i < dropdownItems.length; i++) {
+    dropdownItems[i].addEventListener('click', function() {
+      const index = parseInt(this.getAttribute('data-table'));
+      ShowAndHide(index);
+      toggleOptionDropdown(); // Hide the option dropdown after selection
+    });
+  }
+});

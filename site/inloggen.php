@@ -1,5 +1,6 @@
 <?php 
 session_start();
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -10,7 +11,7 @@ session_start();
 </head>
 <body>
 <div class="navbar">
- 
+    <z></z>
     <div class="dropdown">
         <button class="account-btn" onclick="toggleDropdown()">Account</button>
         <div id="dropdown-content" class="dropdown-content">
