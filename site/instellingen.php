@@ -9,17 +9,18 @@ if (!isset($_SESSION['isIngelogd']) || $_SESSION['isIngelogd'] !== true) {
   exit;
 }
 
-$userId = $_SESSION['gebruikerID']; // Retrieve gebruikerID from session
-
+$userId = $_SESSION['gebruikerID']; 
 $sql = "SELECT * FROM Gebruiker WHERE gebruikerID = '$userId'";
 
 $result = mysqli_query($conn, $sql);
+
 
 if (!$result) {
   die("Query failed: " . mysqli_error($conn));
 }
 
 $userData = mysqli_fetch_assoc($result);
+
 
 // Check if user data exists
 if (!$userData) {
@@ -43,7 +44,17 @@ if (!$userData) {
         <a class="navbar-brand">Mikey's Site</a>
         <ul class="navbar-content">
             <li>
-                <a href="overzicht.php">Overzichten</a>
+                <?php if (isset($_SESSION['isAdmin']) && $_SESSION['isAdmin'] === true) : ?>
+                    <a href="overzicht.php">Overzichten</a>
+                    <a href="contact-persoon-toevoegen.php">Contact Persoon Toevoegen</a>
+                    <a href="admin-dashboard.php">Admin Panel</a>
+                <?php elseif (isset($_SESSION['isManager']) && $_SESSION['isManager'] === true) : ?>
+                    <a href="overzicht.php">Overzichten</a>
+                    <a href="contact-persoon-toevoegen.php">Contact Persoon Toevoegen</a>
+                <?php else : ?>
+                    <a href="overzicht.php">Overzichten</a>
+
+                <?php endif; ?>
             </li>
         </ul>
         <div class="dropdown">
@@ -59,7 +70,6 @@ if (!$userData) {
             </ul>
         </div>
     </div>
-
   <div class="container">
   <h1 class="page-title">Instellingen</h1>
 
@@ -86,9 +96,9 @@ if (!$userData) {
 
         <label for="geslacht">Geslacht</label>
         <select id="geslacht" name="geslacht">
-          <option value="man" <?php if ($userData['geslacht'] === 'man') echo 'selected'; ?>>Man</option>
-          <option value="vrouw" <?php if ($userData['geslacht'] === 'vrouw') echo 'selected'; ?>>Vrouw</option>
-          <option value="anders" <?php if ($userData['geslacht'] === 'anders') echo 'selected'; ?>>Anders</option>
+          <option value="man" <?php if ($userData['geslacht'] === 'Man') echo 'selected'; ?>>Man</option>
+          <option value="vrouw" <?php if ($userData['geslacht'] === 'Vrouw') echo 'selected'; ?>>Vrouw</option>
+          <option value="anders" <?php if ($userData['geslacht'] === 'Anders') echo 'selected'; ?>>Anders</option>
         </select>
 
         <label for="straat">Straat</label>
@@ -113,7 +123,6 @@ if (!$userData) {
         <input type="tel" id="mobielnummer" name="mobielnummer" value="<?php echo $userData['mobielnummer']; ?>">
 
         <input type="submit" value="Opslaan">
-        <button class="btn-wijzig">Wijzig</button>
       </form>
     </div>
   </div>

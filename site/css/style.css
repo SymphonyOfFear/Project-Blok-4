@@ -13,7 +13,6 @@ body {
 }
 
 .container {
-  max-width: 960px;
   margin: 0 auto;
   padding: 20px;
 }
@@ -53,8 +52,12 @@ body {
 .navbar-content li a {
   text-decoration: none;
   color: #333;
+  margin-left: 25px;
+  margin-right: 25px;
 }
-
+#account-dropdown-button{
+color: #fff;
+}
 .dropdown {
   position: relative;
   display: inline-block;
@@ -77,6 +80,8 @@ body {
   margin-top: 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   z-index: 1;
+  right: 0;
+  margin-left: 15px;
 }
 
 .dropdown-menu.show {
@@ -143,7 +148,8 @@ body {
     transform: translateY(-10px);
   }
 }
-/* Tabelstijlen */
+
+/* Table Styles */
 .table {
   width: 100%;
   border-collapse: collapse;
@@ -168,9 +174,232 @@ table tbody tr:nth-child(even) {
 table tbody tr:hover {
   background-color: #f1f1f1;
 }
-section:first-of-type{
+
+section:first-of-type {
   display: block;
 }
-section{
+
+section {
   display: none;
+}
+
+/* Additional Form Styles */
+.container form h2 {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.container form input[type="button"],
+.container form input[type="submit"] {
+  margin-top: 10px;
+}
+
+.progress {
+  background-color: #ddd;
+  height: 10px;
+  margin-bottom: 20px;
+  overflow: hidden;
+  border-radius: 4px;
+}
+
+.progress-bar {
+  background-color: #4CAF50;
+  height: 100%;
+  width: 0;
+  transition: width 0.3s ease-in-out;
+}
+
+ul li {
+  list-style: none;
+}
+
+.show {
+  display: block;
+}
+
+/* Custom Search Styles */
+.search-input {
+  width: 200px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.search-button {
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+/* New CSS Rules */
+
+/* Additional Form Styles */
+.personal-info-form textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  resize: none;
+}
+
+/* New Navbar Styles */
+.navbar .dropdown .dropdown-toggle::after {
+  content: "\25BE";
+  display: inline-block;
+  margin-left: 5px;
+  vertical-align: middle;
+}
+
+.navbar .dropdown:hover .dropdown-toggle::after {
+  transform: rotate(180deg);
+}
+
+/* New Button Styles */
+.personal-info-form input[type="button"],
+.personal-info-form input[type="submit"],
+.personal-info-form .btn-wijzig {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.personal-info-form input[type="button"]:hover,
+.personal-info-form input[type="submit"]:hover,
+.personal-info-form .btn-wijzig:hover {
+  background-color: #45a049;
+}
+
+.personal-info-form input[type="button"]:focus,
+.personal-info-form input[type="submit"]:focus,
+.personal-info-form .btn-wijzig:focus {
+  outline: none;
+}
+
+/* New Progress Bar Styles */
+.progress-bar.success {
+  background-color: #45a049;
+}
+
+.progress-bar.error {
+  background-color: #ff0000;
+}
+
+/* New Table Styles */
+.table th:first-child,
+.table td:first-child {
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+}
+
+.table th:last-child,
+.table td:last-child {
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+
+/* New Section Styles */
+section:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+/* Blue Theme */
+body {
+  background-color: #f5f5f5;
+  color: #333;
+}
+
+.container {
+  background-color: #fff;
+}
+
+.navbar {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.navbar-brand,
+.navbar-content li a {
+  color: #fff;
+}
+
+.navbar-content li a:hover {
+  color: #eaeaea;
+}
+
+.dropdown-menu {
+  background-color: #007bff;
+  border: 1px solid #007bff;
+}
+
+.dropdown-item a {
+  color: #fff;
+}
+
+.dropdown-item a:hover {
+  background-color: #0056b3;
+}
+
+.personal-info-form input[type="submit"],
+.personal-info-form .btn-wijzig {
+  background-color: #007bff;
+}
+
+.personal-info-form input[type="submit"]:hover,
+.personal-info-form .btn-wijzig:hover {
+  background-color: #0056b3;
+}
+
+.progress-bar {
+  background-color: #007bff;
+}
+
+.progress-bar.success {
+  background-color: #00b347;
+}
+
+.progress-bar.error {
+  background-color: #ff0000;
+}
+
+.table th {
+  background-color: #f5f5f5;
+}
+
+.table tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.table tbody tr:hover {
+  background-color: #f1f1f1;
+}
+
+section:nth-child(even) {
+  background-color: #f9f9f9;
+}
+.table-wrapper {
+    height: 400px;
+    overflow: auto;
+}
+
+.side-table .container{
+  margin: 0;
+}
+.container h1{
+  text-align: center;
+
 }

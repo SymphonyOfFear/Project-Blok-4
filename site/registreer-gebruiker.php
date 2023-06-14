@@ -16,15 +16,24 @@ session_start();
         <a class="navbar-brand">Mikey's Site</a>
         <ul class="navbar-content">
             <li>
-                <a href="overzicht.php">Overzichten</a>
+                <?php if (isset($_SESSION['isAdmin']) && $_SESSION['isAdmin'] === true) : ?>
+                    <a href="overzicht.php">Overzichten</a>
+                    <a href="contact-persoon-toevoegen.php">Contact Persoon Toevoegen</a>
+                    <a href="admin-dashboard.php">Admin Panel</a>
+                <?php elseif (isset($_SESSION['isManager']) && $_SESSION['isManager'] === true) : ?>
+                    <a href="overzicht.php">Overzichten</a>
+                    <a href="contact-persoon-toevoegen.php">Contact Persoon Toevoegen</a>
+                <?php else : ?>
+                    <a href="overzicht.php">Overzichten</a>
+                <?php endif; ?>
             </li>
         </ul>
         <div class="dropdown">
             <button class="dropdown-toggle" id="account-dropdown-button" onclick="toggleAccountDropdown()">Account</button>
             <ul id="account-dropdown-menu" class="dropdown-menu">
                 <?php if (isset($_SESSION['isIngelogd']) && $_SESSION['isIngelogd'] === true) : ?>
-                    <li class="dropdown-item"><a href="instellingen.php">Instellingen</a></li>
-                    <li class="dropdown-item"><a href="uitloggen.php">Uitloggen</a></li>
+                    <li class="dropdown-item"><a data-table="4" href="instellingen.php">Instellingen</a></li>
+                    <li class="dropdown-item"><a data-table="5" href="uitloggen.php">Uitloggen</a></li>
                 <?php else : ?>
                     <li class="dropdown-item"><a href="inloggen.php">Inloggen</a></li>
                     <li class="dropdown-item"><a href="registreer-gebruiker.php">Registreren</a></li>
@@ -38,7 +47,7 @@ session_start();
         <div class="progress">
             <div id="progress-bar" class="progress-bar"></div>
         </div>
-        <form action="verwerk-registreren-gebruiker.php" onsubmit="return validateForm()" method="post">
+        <form action="verwerk-registreren-gebruiker.php" onsubmit="return validateForm()" method="post" class="personal-info-form">
             <!-- Formulier: Deel 1 -->
             <section>
                 <h2>Deel 1: Persoonlijke gegevens</h2>
@@ -74,7 +83,7 @@ session_start();
                 <label for="mobielnummer">Mobielnummer:</label>
                 <input type="tel" id="mobielnummer" name="mobielnummer" oninput="updateProgress()">
 
-                <input type="button" class="btn-wijzig"  value="Vorige" onclick="showFormPart(1)">
+                <input type="button" class="btn-wijzig" value="Vorige" onclick="showFormPart(1)">
                 <input type="button" class="btn-wijzig" value="Volgende" onclick="showFormPart(3)">
             </section>
 

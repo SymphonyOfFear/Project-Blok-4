@@ -61,8 +61,8 @@ function ShowAndHide(section) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-  const accountDropdown  = document.getElementById('account-dropdown-button');
-  const optionDropdown = document.getElementById('option-dropdown');
+  const accountDropdown  = document.getElementById('option-dropdown');
+  const optionDropdown = document.getElementById('account-dropdown-button');
 
   // Option Dropdown
   const optionDropdownButton = document.getElementById('account-dropdown-button');
@@ -86,4 +86,26 @@ document.addEventListener('DOMContentLoaded', function() {
       toggleOptionDropdown(); // Hide the option dropdown after selection
     });
   }
+
+  // Handle form submission
+  $('#search-form').submit(function(event) {
+    event.preventDefault(); // Prevent default form submission
+
+    var searchQuery = $('#search-input').val(); // Get the search query
+
+    // Make an AJAX request to search.php
+    $.ajax({
+      url: 'search.php',
+      type: 'GET',
+      data: { search: searchQuery },
+      dataType: 'html',
+      success: function(response) {
+        // Update the table with the response
+        $('#gebruiker-table').html(response);
+      },
+      error: function() {
+        alert('Error occurred while searching.'); // Show an error message
+      }
+    });
+  });
 });
