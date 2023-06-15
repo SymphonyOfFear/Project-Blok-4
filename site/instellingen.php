@@ -9,7 +9,7 @@ if (!isset($_SESSION['isIngelogd']) || $_SESSION['isIngelogd'] !== true) {
   exit;
 }
 
-$userId = $_SESSION['gebruikerID']; 
+$userId = $_SESSION['gebruikerID'];
 $sql = "SELECT * FROM Gebruiker WHERE gebruikerID = '$userId'";
 
 $result = mysqli_query($conn, $sql);
@@ -40,38 +40,43 @@ if (!$userData) {
 </head>
 
 <body>
-<div class="navbar">
-        <a class="navbar-brand">Mikey's Site</a>
-        <ul class="navbar-content">
-            <li>
-                <?php if (isset($_SESSION['isAdmin']) && $_SESSION['isAdmin'] === true) : ?>
-                    <a href="overzicht.php">Overzichten</a>
-                    <a href="contact-persoon-toevoegen.php">Contact Persoon Toevoegen</a>
-                    <a href="admin-dashboard.php">Admin Panel</a>
-                <?php elseif (isset($_SESSION['isManager']) && $_SESSION['isManager'] === true) : ?>
-                    <a href="overzicht.php">Overzichten</a>
-                    <a href="contact-persoon-toevoegen.php">Contact Persoon Toevoegen</a>
-                <?php else : ?>
-                    <a href="overzicht.php">Overzichten</a>
-
-                <?php endif; ?>
-            </li>
-        </ul>
-        <div class="dropdown">
-            <button class="dropdown-toggle" id="account-dropdown-button" onclick="toggleAccountDropdown()">Account</button>
-            <ul id="account-dropdown-menu" class="dropdown-menu">
-                <?php if (isset($_SESSION['isIngelogd']) && $_SESSION['isIngelogd'] === true) : ?>
-                    <li class="dropdown-item"><a href="instellingen.php">Instellingen</a></li>
-                    <li class="dropdown-item"><a href="uitloggen.php">Uitloggen</a></li>
-                <?php else : ?>
-                    <li class="dropdown-item"><a href="inloggen.php">Inloggen</a></li>
-                    <li class="dropdown-item"><a href="registreer-gebruiker.php">Registreren</a></li>
-                <?php endif; ?>
-            </ul>
-        </div>
+<div class="title-opdracht">
+        <h1>Contact Personen</h1>
     </div>
+    <div class="stripe">
+
+    </div>
+  <div class="navbar">
+    <a class="navbar-brand">Mikey's Site</a>
+    <ul class="navbar-content">
+      <?php if (isset($userData['role']) && $userData['role'] == 'administrator') : ?>
+        <li><a href="overzicht.php">Overzichten</a></li>
+        <li><a href="contact-persoon-toevoegen.php">Contact Persoon Toevoegen</a></li>
+        <li><a href="admin-dashboard.php">Admin Panel</a></li>
+
+      <?php elseif (isset($userData['role']) && $userData['role'] == "manager") : ?>
+        <li><a href="overzicht.php">Overzichten</a></li>
+        <li><a href="contact-persoon-toevoegen.php">Contact Persoon Toevoegen</a></li>
+      <?php else : ?>
+        <li><a href="overzicht.php">Overzichten</a></li>
+      <?php endif; ?>
+
+    </ul>
+    <div class="dropdown">
+      <button class="dropdown-toggle" id="account-dropdown-button" onclick="toggleAccountDropdown()">Account</button>
+      <ul id="account-dropdown-menu" class="dropdown-menu">
+        <?php if (isset($_SESSION['isIngelogd']) && $_SESSION['isIngelogd'] === true) : ?>
+          <li class="dropdown-item"><a data-table="4" href="instellingen.php">Instellingen</a></li>
+          <li class="dropdown-item"><a data-table="5" href="uitloggen.php">Uitloggen</a></li>
+        <?php else : ?>
+          <li class="dropdown-item"><a href="inloggen.php">Inloggen</a></li>
+          <li class="dropdown-item"><a href="registreer-gebruiker.php">Registreren</a></li>
+        <?php endif; ?>
+      </ul>
+    </div>
+  </div>
   <div class="container">
-  <h1 class="page-title">Instellingen</h1>
+    <h1 class="page-title">Instellingen</h1>
 
     <div class="tab-content" id="persoonlijke-info">
       <h2>Persoonlijke Informatie</h2>

@@ -12,6 +12,12 @@ session_start();
 </head>
 
 <body>
+<div class="title-opdracht">
+        <h1>Contact Personen</h1>
+    </div>
+    <div class="stripe">
+
+    </div>
 <div class="navbar">
         <a class="navbar-brand">Mikey's Site</a>
         <ul class="navbar-content">

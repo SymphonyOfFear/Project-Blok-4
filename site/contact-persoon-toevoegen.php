@@ -1,5 +1,26 @@
 <?php
 session_start();
+require 'database.php';
+$userId = $_SESSION['gebruikerID'];
+$sql = "SELECT * FROM Gebruiker WHERE gebruikerID = '$userId'";
+$result = mysqli_query($conn, $sql);
+
+if (!$result) {
+    die("Query failed: " . mysqli_error($conn));
+}
+
+$userData = mysqli_fetch_assoc($result);
+
+$role = isset($userData['role']) ? $userData['role'] : null;
+
+
+
+if (isset($userData['role']) && $userData['role'] == 'regular') {
+    header("Location: overzicht.php");
+    exit;
+  }
+
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -12,21 +33,27 @@ session_start();
 </head>
 
 <body>
+<div class="title-opdracht">
+        <h1>Contact Personen</h1>
+    </div>
+    <div class="stripe">
+
+    </div>
 <div class="navbar">
         <a class="navbar-brand">Mikey's Site</a>
         <ul class="navbar-content">
-            <li>
-                <?php if (isset($_SESSION['isAdmin']) && $_SESSION['isAdmin'] === true) : ?>
-                    <a href="overzicht.php">Overzichten</a>
-                    <a href="contact-persoon-toevoegen.php">Contact Persoon Toevoegen</a>
-                    <a href="admin-dashboard.php">Admin Panel</a>
-                <?php elseif (isset($_SESSION['isManager']) && $_SESSION['isManager'] === true) : ?>
-                    <a href="overzicht.php">Overzichten</a>
-                    <a href="contact-persoon-toevoegen.php">Contact Persoon Toevoegen</a>
-                <?php else : ?>
-                    <a href="overzicht.php">Overzichten</a>
-                <?php endif; ?>
-            </li>
+            <?php if (isset($userData['role']) && $userData['role'] == 'administrator') : ?>
+                <li><a href="overzicht.php">Overzichten</a></li>
+                <li><a href="contact-persoon-toevoegen.php">Contact Persoon Toevoegen</a></li>
+                <li><a href="admin-dashboard.php">Admin Panel</a></li>
+         
+            <?php elseif (isset($userData['role']) && $userData['role'] == "manager") : ?>
+                <li><a href="overzicht.php">Overzichten</a></li>
+                <li><a href="contact-persoon-toevoegen.php">Contact Persoon Toevoegen</a></li>
+            <?php else : ?>
+                <li><a href="overzicht.php">Overzichten</a></li>
+            <?php endif; ?>
+
         </ul>
         <div class="dropdown">
             <button class="dropdown-toggle" id="account-dropdown-button" onclick="toggleAccountDropdown()">Account</button>

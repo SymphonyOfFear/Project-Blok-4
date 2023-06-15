@@ -2,23 +2,53 @@
 session_start();
 require 'database.php';
 
+$userId = $_SESSION['gebruikerID'];
+$sql = "SELECT * FROM Gebruiker WHERE gebruikerID = '$userId'";
+$result = mysqli_query($conn, $sql);
+
+if (!$result) {
+    die("Query failed: " . mysqli_error($conn));
+}
+
+$userData = mysqli_fetch_assoc($result);
+$role = isset($userData['role']) ? $userData['role'] : null;
+
 if (!isset($_SESSION['isIngelogd']) || $_SESSION['isIngelogd'] !== true) {
     header("Location: inloggen.php");
     exit;
 }
 
-if (isset($_POST['submit'])) {
-    $zoekveld = $_POST['zoekveld'];
+$noResultsMessage = ''; // Initialize the variable to store the "no results" message
+if (isset($userData['role']) && ($userData['role'] == 'administrator' || $userData['role'] == 'manager')) {
+    if (isset($_POST['submit'])) {
+        $zoekveld = $_POST['zoekveld']; {
+            $sql = "SELECT * FROM Gebruiker WHERE voornaam LIKE '%$zoekveld%'";
+            $result = mysqli_query($conn, $sql);
+            $GezochtenGebruiker = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
-    $sql = "SELECT * FROM Gebruiker WHERE voornaam LIKE '%$zoekveld%'";
-    $result = mysqli_query($conn, $sql);
-    $GezochtenGebruiker = mysqli_fetch_all($result, MYSQLI_ASSOC);
+            $sql = "SELECT * FROM ContactPersoon WHERE naam LIKE '%$zoekveld%'";
+            $result = mysqli_query($conn, $sql);
+            $GezochtenContact = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
-    $sql = "SELECT * FROM ContactPersoon WHERE naam LIKE '%$zoekveld%'";
-    $result = mysqli_query($conn, $sql);
-    $GezochtenContact = mysqli_fetch_all($result, MYSQLI_ASSOC);
+            if (empty($GezochtenContact) && empty($GezochtenGebruiker)) {
+                $noResultsMessage = 'Geen resultaten gevonden.';
+            }
+        }
+    }
+} else {
+    if (isset($_POST['submit'])) {
+        $zoekveld = $_POST['zoekveld']; {
+
+            $sql = "SELECT * FROM ContactPersoon WHERE naam LIKE '%$zoekveld%'";
+            $result = mysqli_query($conn, $sql);
+            $GezochtenContact = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+            if (empty($GezochtenContact)) {
+                $noResultsMessage = 'Geen resultaten gevonden voor Contactpersonen.';
+            }
+        }
+    }
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -31,21 +61,24 @@ if (isset($_POST['submit'])) {
 </head>
 
 <body>
+    <div class="title-opdracht">
+        <h1>Contact Personen</h1>
+    </div>
+    <div class="stripe">
+    </div>
     <div class="navbar">
         <a class="navbar-brand">Mikey's Site</a>
         <ul class="navbar-content">
-            <li>
-                <?php if (isset($_SESSION['isAdmin']) && $_SESSION['isAdmin'] === true) : ?>
-                    <a href="overzicht.php">Overzichten</a>
-                    <a href="contact-persoon-toevoegen.php">Contact Persoon Toevoegen</a>
-                    <a href="admin-dashboard.php">Admin Panel</a>
-                <?php elseif (isset($_SESSION['isManager']) && $_SESSION['isManager'] === true) : ?>
-                    <a href="overzicht.php">Overzichten</a>
-                    <a href="contact-persoon-toevoegen.php">Contact Persoon Toevoegen</a>
-                <?php else : ?>
-                    <a href="overzicht.php">Overzichten</a>
-                <?php endif; ?>
-            </li>
+            <?php if (isset($userData['role']) && $userData['role'] == 'administrator') : ?>
+                <li><a href="overzicht.php">Overzichten</a></li>
+                <li><a href="contact-persoon-toevoegen.php">Contact Persoon Toevoegen</a></li>
+                <li><a href="admin-dashboard.php">Admin Panel</a></li>
+            <?php elseif (isset($userData['role']) && $userData['role'] == "manager") : ?>
+                <li><a href="overzicht.php">Overzichten</a></li>
+                <li><a href="contact-persoon-toevoegen.php">Contact Persoon Toevoegen</a></li>
+            <?php else : ?>
+                <li><a href="overzicht.php">Overzichten</a></li>
+            <?php endif; ?>
         </ul>
         <div class="dropdown">
             <button class="dropdown-toggle" id="account-dropdown-button" onclick="toggleAccountDropdown()">Account</button>
@@ -62,7 +95,6 @@ if (isset($_POST['submit'])) {
     </div>
     <div class="side-table">
         <div class="container">
-
             <?php if (isset($_POST['submit']) && (!empty($GezochtenGebruiker) || !empty($GezochtenContact))) : ?>
                 <section class="section section4">
                     <h2>Zoekresultaten</h2>
@@ -111,39 +143,63 @@ if (isset($_POST['submit'])) {
                             </table>
                         </div>
                     <?php endif; ?>
-                    <?php if (!empty($GezochtenContact)) : ?>
-                        <h3>Gevonden Contact Personen</h3>
+
+
+                    <h3>Gevonden Contact Personen</h3>
+                    <div class="table-wrapper">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Naam</th>
+                                    <th>Adres</th>
+                                    <th>Geslacht</th>
+                                    <th>Telefoonnummer</th>
+                                    <th>Notitie</th>
+                                    <th>Toevoegings Datum</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($GezochtenContact as $Contact) : ?>
+                                    <tr>
+                                        <td><?php echo $Contact['contactID']; ?></td>
+                                        <td><?php echo $Contact['naam']; ?></td>
+                                        <td><?php echo $Contact['adres']; ?></td>
+                                        <td><?php echo $Contact['geslacht']; ?></td>
+                                        <td><?php echo $Contact['telefoonnummer']; ?></td>
+                                        <td><?php echo $Contact['notitie']; ?></td>
+                                        <td><?php echo $Contact['toevoegdatum']; ?></td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </section>
+                <div class="go-back-button">
+                    <a href="overzicht.php">Ga terug</a>
+                </div>
+            <?php else : ?>
+                <section class="section section4">
+                    <h2>Zoekresultaten</h2>
+                 
+                        <h3>Gevonden Contacten</h3>
                         <div class="table-wrapper">
                             <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Naam</th>
-                                        <th>Adres</th>
-                                        <th>Geslacht</th>
-                                        <th>Telefoonnummer</th>
-                                        <th>Notitie</th>
-                                        <th>Toevoegings Datum</th>
-                                    </tr>
-                                </thead>
                                 <tbody>
-                                    <?php foreach ($GezochtenContact as $Contact) : ?>
-                                        <tr>
-                                            <td><?php echo $Contact['contactID']; ?></td>
-                                            <td><?php echo $Contact['naam']; ?></td>
-                                            <td><?php echo $Contact['adres']; ?></td>
-                                            <td><?php echo $Contact['geslacht']; ?></td>
-                                            <td><?php echo $Contact['telefoonnummer']; ?></td>
-                                            <td><?php echo $Contact['notitie']; ?></td>
-                                            <td><?php echo $Contact['toevoegdatum']; ?></td>
-                                        </tr>
-                                    <?php endforeach; ?>
+                                    <tr>
+                                        <td><?php echo $noResultsMessage; ?></td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
+            </section>
+            <div class="go-back-button">
+                    <a href="overzicht.php">Ga terug</a>
+                </div>
                     <?php endif; ?>
-                </section>
-            <?php endif; ?>
+      
+
         </div>
     </div>
 </body>

@@ -2,9 +2,13 @@
 session_start();
 require 'database.php';
 
+if (!isset($_SESSION['isIngelogd']) || $_SESSION['isIngelogd'] !== true) {
+    header("Location: inloggen.php");
+    exit;
+}
+
 $userId = $_SESSION['gebruikerID'];
 $sql = "SELECT * FROM Gebruiker WHERE gebruikerID = '$userId'";
-
 $result = mysqli_query($conn, $sql);
 
 if (!$result) {
@@ -13,11 +17,7 @@ if (!$result) {
 
 $userData = mysqli_fetch_assoc($result);
 
-
-if (!isset($_SESSION['isIngelogd']) || $_SESSION['isIngelogd'] !== true) {
-    header("Location: inloggen.php");
-    exit;
-}
+$role = isset($userData['role']) ? $userData['role'] : null;
 
 $zoekenGebruikers = mysqli_fetch_all(mysqli_query($conn, "SELECT * FROM Gebruiker"), MYSQLI_ASSOC);
 $zoekenContact = mysqli_fetch_all(mysqli_query($conn, "SELECT * FROM ContactPersoon"), MYSQLI_ASSOC);
@@ -43,22 +43,23 @@ $result = mysqli_query($conn, $sql);
 $ContactTabel = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
 $sql = "SELECT
-(SELECT COUNT(*) FROM ContactPersoon) AS totalContactPersons,
-(SELECT COUNT(*) FROM Gebruiker WHERE role = 'administrator') AS totalAdministrators,
-(SELECT COUNT(*) FROM Gebruiker WHERE role = 'manager') AS totalManagers,
-(SELECT COUNT(*) FROM Gebruiker WHERE role = 'regular') AS totalRegularUsers;
-";
+    (SELECT COUNT(*) FROM ContactPersoon) AS totalContactPersons,
+    (SELECT COUNT(*) FROM Gebruiker WHERE role = 'administrator') AS totalAdministrators,
+    (SELECT COUNT(*) FROM Gebruiker WHERE role = 'manager') AS totalManagers,
+    (SELECT COUNT(*) FROM Gebruiker WHERE role = 'regular') AS totalRegularUsers";
 $result = mysqli_query($conn, $sql);
-$TotaalAantalContact = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+if (!$result) {
+    die("Query failed: " . mysqli_error($conn));
+}
+$TotaalAantalContact = mysqli_fetch_assoc($result);
 
 $sql = "SELECT COUNT(*) AS total_contacts FROM ContactPersoon";
 $result = mysqli_query($conn, $sql);
-$AlleContacten = mysqli_fetch_all($result, MYSQLI_ASSOC);
+$AlleContacten = mysqli_fetch_assoc($result);
 
-$role = isset($_SESSION['role']) ? $_SESSION['role'] : null; // Retrieve the role from session if set, otherwise set it to null
-
-var_dump($role);
 ?>
+
 
 <!DOCTYPE html>
 <html>
@@ -72,19 +73,27 @@ var_dump($role);
 </head>
 
 <body>
-    <div class="navbar">
+<div class="title-opdracht">
+        <h1>Contact Personen</h1>
+    </div>
+    <div class="stripe">
+
+    </div>
+<div class="navbar">
         <a class="navbar-brand">Mikey's Site</a>
         <ul class="navbar-content">
-            <?php if (isset($_SESSION['role'])  && $_SESSION['role'] == 'administrator') : ?>
+            <?php if (isset($userData['role']) && $userData['role'] == 'administrator') : ?>
                 <li><a href="overzicht.php">Overzichten</a></li>
                 <li><a href="contact-persoon-toevoegen.php">Contact Persoon Toevoegen</a></li>
                 <li><a href="admin-dashboard.php">Admin Panel</a></li>
-            <?php elseif (isset($_SESSION['role'])  && $_SESSION['role'] == "manager") : ?>
+         
+            <?php elseif (isset($userData['role']) && $userData['role'] == "manager") : ?>
                 <li><a href="overzicht.php">Overzichten</a></li>
                 <li><a href="contact-persoon-toevoegen.php">Contact Persoon Toevoegen</a></li>
             <?php else : ?>
                 <li><a href="overzicht.php">Overzichten</a></li>
             <?php endif; ?>
+
         </ul>
         <div class="dropdown">
             <button class="dropdown-toggle" id="account-dropdown-button" onclick="toggleAccountDropdown()">Account</button>
@@ -111,24 +120,24 @@ var_dump($role);
                 <h1>Log in om het overzicht te bekijken</h1>
             <?php endif; ?>
 
-            <div class="dropdown" id="option-dropdown">
-                <button class="dropdown-toggle" id="option-dropdown-button" onclick="toggleOptionDropdown()">Selecteer een Overzicht</button>
-                <ul id="option-dropdown-menu" class="dropdown-menu">
-                    <?php if (isset($_SESSION['role'])  && $_SESSION['role'] == "administrator") : ?>
-                    <?php elseif (isset($_SESSION['role'])  && $_SESSION['role'] == "manager") : ?>
-                        <li class="dropdown-item" data-table="1" onclick="ShowAndHide(1)">Bekijken Gebruikers</li>
-                    <?php endif ?>
-                    <li class="dropdown-item" data-table="2" onclick="ShowAndHide(2)">Bekijken Personen</li>
-                    <?php if (isset($_SESSION['role'])  && $_SESSION['role'] == "administrator") : ?>
-                    <?php elseif (isset($_SESSION['role'])  && $_SESSION['role'] == "manager") : ?>
-                        <li class="dropdown-item" data-table="3" onclick="ShowAndHide(3)">Bekijken Statistieken</li>
-                    <?php endif ?>
-                </ul>
-            </div>
 
+            <?php if (isset($userData['role']) && $userData['role'] == 'administrator' || "manager") : ?>
+                <div class="dropdown" id="option-dropdown">
+                    <button class="dropdown-toggle" id="option-dropdown-button" onclick="toggleOptionDropdown()">Selecteer een Overzicht</button>
+                    <ul id="option-dropdown-menu" class="dropdown-menu">
+
+                        <li class="dropdown-item" data-table="1" onclick="ShowAndHide(1)">Bekijken Gebruikers</li>
+
+                        <li class="dropdown-item" data-table="2" onclick="ShowAndHide(2)">Bekijken Personen</li>
+
+                        <li class="dropdown-item" data-table="3" onclick="ShowAndHide(3)">Bekijken Statistieken</li>
+
+                    </ul>
+                </div>
+            <?php endif ?>
             <!-- Overzichtstabel 1 -->
-            <?php if (isset($_SESSION['role'])  && $_SESSION['role'] == "administrator") : ?>
-            <?php elseif (isset($_SESSION['role'])  && $_SESSION['role'] == "manager") : ?>
+            <?php if (isset($userData['role']) && $userData['role'] == 'administrator' || "manager") : ?>
+
                 <section class="section section1">
                     <form action="search.php" method="POST">
                         <div class="search-bar">
@@ -219,8 +228,7 @@ var_dump($role);
             </section>
 
             <!-- Overzichtstabel 3 -->
-            <?php if (isset($_SESSION['role'])  && $_SESSION['role'] == "administrator") : ?>
-            <?php elseif (isset($_SESSION['role'])  && $_SESSION['role'] == "manager") : ?>
+            <?php if (isset($userData['role']) && $userData['role'] == 'administrator' || "manager") : ?>
                 <section class="section section3">
                     <h2>Statistieken Overzicht</h2>
                     <table class="table">
@@ -233,14 +241,17 @@ var_dump($role);
                             </tr>
                         </thead>
                         <tbody>
-                            <?php foreach ($TotaalAantalContact as $contact) : ?>
-                                <tr>
-                                    <td><?php echo $contact['totalContactPersons']; ?></td>
-                                    <td><?php echo $contact['totalAdministrators']; ?></td>
-                                    <td><?php echo $contact['totalManagers']; ?></td>
-                                    <td><?php echo $contact['totalRegularUsers']; ?></td>
-                                </tr>
-                            <?php endforeach; ?>
+                            
+                              
+                                    <tr>
+                                        <td><?php echo $TotaalAantalContact['totalContactPersons']; ?></td>
+                                        <td><?php echo $TotaalAantalContact['totalAdministrators']; ?></td>
+                                        <td><?php echo $TotaalAantalContact['totalManagers']; ?></td>
+                                        <td><?php echo $TotaalAantalContact['totalRegularUsers']; ?></td>
+                                    </tr>
+                        
+                         
+
                         </tbody>
                     </table>
                 </section>

@@ -15,6 +15,7 @@ body {
 .container {
   margin: 0 auto;
   padding: 20px;
+  overflow-x: hidden;
 }
 
 .page-title {
@@ -55,9 +56,11 @@ body {
   margin-left: 25px;
   margin-right: 25px;
 }
-#account-dropdown-button{
-color: #fff;
+
+#account-dropdown-button {
+  color: #fff;
 }
+
 .dropdown {
   position: relative;
   display: inline-block;
@@ -278,6 +281,14 @@ ul li {
   transition: background-color 0.3s ease-in-out;
 }
 
+.personal-info-form {
+  overflow: hidden;
+}
+
+.personal-info-form:hover {
+  overflow: auto;
+}
+
 .personal-info-form input[type="button"]:hover,
 .personal-info-form input[type="submit"]:hover,
 .personal-info-form .btn-wijzig:hover {
@@ -391,10 +402,16 @@ body {
 section:nth-child(even) {
   background-color: #f9f9f9;
 }
+
 .table-wrapper {
     height: 400px;
-    overflow: auto;
+    overflow: hidden;
 }
+
+.table-wrapper:hover {
+  overflow: auto;
+}
+
 
 .side-table .container{
   margin: 0;
@@ -402,4 +419,242 @@ section:nth-child(even) {
 .container h1{
   text-align: center;
 
+}
+/* Admin Dashboard Styles */
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.dashboard-header {
+  background-color: #007bff;
+  color: #fff;
+  padding: 20px;
+}
+
+.dashboard-header h1 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.dashboard-menu {
+  display: flex;
+  background-color: #f5f5f5;
+  padding: 10px;
+  overflow-x: hidden;
+}
+
+.dashboard-menu-item {
+  flex: 1;
+  padding: 10px;
+  text-align: center;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dashboard-menu-item a {
+  color: #000;
+}
+
+.dashboard-menu-item a:hover {
+  background-color: #ddd;
+  overflow: visible;
+  white-space: normal;
+  color: #0056b3;
+}
+
+.user-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.user-table th,
+.user-table td {
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+.user-table th {
+  background-color: #fff;
+}
+
+.dashboard-content {
+  flex: 1;
+  padding: 20px;
+}
+
+.dashboard-menu-item a {
+  text-decoration: none;
+}
+
+/* User Profile Styles */
+.user-profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.user-profile img {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+
+.user-profile h2 {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.user-profile p {
+  margin-bottom: 10px;
+}
+
+.user-profile .btn {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease-in-out;
+  text-decoration: none;
+}
+
+.user-profile .btn:hover {
+  background-color: #0056b3;
+}
+
+.user-profile .btn-primary {
+  background-color: #007bff;
+}
+
+.user-profile .btn-danger {
+  background-color: #ff0000;
+}
+
+.user-profile .btn-success {
+  background-color: #00b347;
+}
+
+.user-profile .btn-primary:hover,
+.user-profile .btn-danger:hover,
+.user-profile .btn-success:hover {
+  background-color: #0056b3;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .navbar-content li {
+    display: none;
+  }
+
+  .navbar-content li:last-child {
+    display: inline-block;
+  }
+
+  .navbar .dropdown .dropdown-toggle::after {
+    display: none;
+  }
+
+  .dropdown-menu {
+    position: static;
+    display: none;
+    margin-top: 5px;
+    box-shadow: none;
+  }
+
+  .dropdown-menu.show {
+    position: static;
+    display: block;
+  }
+
+  .dropdown-item {
+    margin-bottom: 0;
+  }
+
+  .dropdown-item a {
+    display: inline-block;
+    margin-right: 10px;
+  }
+}
+/* Table Styles */
+.user-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.user-table th,
+.user-table td {
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+.user-table th {
+  font-weight: bold;
+  background-color: #f5f5f5;
+}
+
+.user-table tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.user-table input[type="text"] {
+  width: 100%;
+  padding: 5px;
+  border: none;
+  background-color: transparent;
+  color: #333;
+}
+
+.action-button {
+  padding: 5px 10px;
+  background-color: #4CAF50;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.action-button + .action-button {
+  margin-left: 5px;
+}
+.title-opdracht {
+  text-align: center;
+  background-color: #007bff;
+  padding: 10px;
+}
+
+.title-opdracht h1 {
+  font-size: 24px;
+  color: #fff;
+}
+.stripe{
+  background-color: #ccc;
+  width: 100%;
+  height: 20px;
+}
+.go-back-button a{
+text-decoration: none;
+color: #000;
+}
+ul li{
+  color: #fff;
+
+}
+ 
+.go-back-button a:hover{
+  color: #0056b3;
 }

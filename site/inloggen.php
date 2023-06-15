@@ -9,6 +9,12 @@ session_start();
     <link href="https://fonts.googleapis.com/css2?family=Alumni+Sans:wght@200&family=Jost:wght@700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
+<div class="title-opdracht">
+        <h1>Contact Personen</h1>
+    </div>
+    <div class="stripe">
+
+    </div>
 <div class="navbar">
         <a class="navbar-brand">Mikey's Site</a>
         <ul class="navbar-content">

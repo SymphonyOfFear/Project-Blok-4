@@ -28,8 +28,6 @@ if (!$result) {
     echo "Error description: " . mysqli_error($conn);
     exit;
 }
-
-mysqli_close($conn);
-session_destroy();
 header("Location: overzicht.php");
+mysqli_close($conn);
 exit;
